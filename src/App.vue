@@ -1,60 +1,50 @@
 <template>
   <div id="app">
+    <my-header></my-header>
     <router-view></router-view>
-     <vue-progress-bar></vue-progress-bar>
+    <vue-progress-bar></vue-progress-bar>
   </div>
 </template>
 
 <script>
+import MyHeader from "@/components/Header";
+
 export default {
-  name: 'App',
+  name: "app",
   mounted() {
-    this.$Progress.finish()
+    //  [App.vue specific] When App.vue is finish loading finish the progress bar
+    this.$Progress.finish();
   },
   created() {
-    console.log(this.$store)
-    console.log(this.$api)
-  },
-  methods:{
-    start () {
-        this.$Progress.start()
-    },
-    set (num) {
-        this.$Progress.set(num)
-    },
-    increase (num) {
-        this.$Progress.increase(num)
-    },
-    decrease (num) {
-        this.$Progress.decrease(num)
-    },
-    finish () {
-        this.$Progress.finish()
-    },
-    fail () {
-        this.$Progress.fail()
-    },
-    test(){
-      this.$Progress.start()
-
-      this.$http.jsonp('http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=7waqfqbprs7pajbz28mqf6vz')
-      .then((response) => {
-          this.$Progress.finish()
-      }, (response) => {
-          this.$Progress.fail()
-      })
-    }
+    console.log(this.$store);
+    console.log(this.$api);
+    //  [App.vue specific] When App.vue is first loaded start the progress bar
+    this.$Progress.start();
+    //  hook the progress bar to start before we move router-view
+    this.$router.beforeEach((to, from, next) => {
+      //  does the page we want to go to have a meta.progress object
+      if (to.meta.progress !== undefined) {
+        let meta = to.meta.progress;
+        // parse meta tags
+        this.$Progress.parseMeta(meta);
+      }
+      //  start the progress bar
+      this.$Progress.start();
+      //  continue to next page
+      next();
+    });
+    //  hook the progress bar to finish after we've finished moving router-view
+    this.$router.afterEach((to, from) => {
+      //  finish the progress bar
+      this.$Progress.finish();
+    });
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  margin: 0;
+  padding: 0;
 }
 </style>

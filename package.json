@@ -10,7 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "leancloud-storage": "^3.8.0",
+    "leancloud-storage": "^3.9.0",
     "vue": "^2.5.2",
     "vue-progressbar": "^0.7.5",
     "vue-router": "^3.0.1",
@@ -29,6 +29,7 @@
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
+    "element-ui": "^2.4.4",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
